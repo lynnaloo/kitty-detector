@@ -1,0 +1,19 @@
+{
+  "name": "kitty-detector",
+  "version": "0.0.1",
+  "description": "Tessel project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "www.github.com/lynnaloo/kitty-detector",
+  "keywords": [
+    "Tessel",
+    "kitty"
+  ],
+  "license": "MIT",
+  "readme": "Detects nearby kitties.",
+  "dependencies": {
+    "aws-iot-device-sdk": "^1.0.12"
+  }
+}
