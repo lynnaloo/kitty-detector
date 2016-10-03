@@ -15,5 +15,11 @@
   "readme": "Detects nearby kitties.",
   "dependencies": {
     "aws-iot-device-sdk": "^1.0.12"
+  },
+  "devDependencies": {
+    "eslint": "^3.7.0",
+    "eslint-config-eta": "0.0.6",
+    "t2": "0.0.1",
+    "t2-cli": "0.0.29"
   }
 }

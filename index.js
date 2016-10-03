@@ -14,52 +14,44 @@ const device = iot.device({
   region: process.env.AWS_REGION || 'us-east-1'
 });
 
-board.on('ready', function () {
-  const motion = new five.Motion({
-    pin: 'B7'
-  });
+board.on('ready', () => {
+  const motion = new five.Motion('B7');
 
   // This happens once at the begnning of the session. The default state.
-  motion.on('calibrated', function () {
+  motion.on('calibrated', () => {
     console.log('Motion detector calibrated');
   });
 
-  // motion.on("data", function (data) {
-  // });
-
-  // motion.on('change', function () {
-  // });
-
-  motion.on('motionstart', function (data) {
+  motion.on('motionstart', data => {
     console.log(`Kitty Alert: Kitty spotted at: ${data.timestamp}`);
     device.publish('motion-detection', JSON.stringify({ 'motion': true, 'timestamp': data.timestamp}));
   });
 
-  motion.on('motionend', function () {
+  motion.on('motionend', () => {
     console.log('No kitties detected in 25ms');
   });
 });
 
-device.on('connect', function () {
-  console.log('connect');
+device.on('connect', () => {
+  console.log('Connecting to Amazon IoT');
 });
 
-device.on('message', function (topic, payload) {
+device.on('message', (topic, payload) => {
   console.log('message', topic, payload.toString());
 });
 
-device.on('close', function () {
-  console.log('close');
+device.on('close', () => {
+  // do nothing
 });
 
-device.on('reconnect', function () {
-  console.log('reconnect');
+device.on('reconnect', () => {
+  console.log('Attempting to reconnect to Amazon IoT');
 });
 
-device.on('error', function (err) {
-  console.log(err);
-})
+device.on('error', err => {
+  console.log(`Error: ${err.code} while connecting to ${err.hostname}`);
+});
 
-device.on('offline', function () {
-  console.log('offline');
+device.on('offline', () => {
+  // do nothing
 });
