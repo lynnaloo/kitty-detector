@@ -1,7 +1,6 @@
 const five = require('johnny-five');
 const iot = require('aws-iot-device-sdk');
 const Io = require('tessel-io');
-
 const board = new five.Board({
   io: new Io()
 });
@@ -24,7 +23,7 @@ board.on('ready', () => {
 
   motion.on('motionstart', data => {
     console.log(`Kitty Alert: Kitty spotted at: ${data.timestamp}`);
-    device.publish('motion-detection', JSON.stringify({ 'motion': true, 'timestamp': data.timestamp}));
+    device.publish('kitty-detection', JSON.stringify({ 'motion': true, 'timestamp': data.timestamp}));
   });
 
   motion.on('motionend', () => {
