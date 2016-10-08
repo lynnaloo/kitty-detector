@@ -1,4 +1,5 @@
 const five = require('johnny-five');
+const moment = require('moment-timezone');
 const iot = require('aws-iot-device-sdk');
 const Io = require('tessel-io');
 const board = new five.Board({
@@ -14,7 +15,10 @@ const device = iot.device({
 });
 
 board.on('ready', () => {
-  const motion = new five.Motion('B7');
+  const motion = new five.Motion({
+    pin: 'B7',
+    freq: 100
+  });
 
   // This happens once at the begnning of the session. The default state.
   motion.on('calibrated', () => {
@@ -22,12 +26,13 @@ board.on('ready', () => {
   });
 
   motion.on('motionstart', data => {
-    console.log(`Kitty Alert: Kitty spotted at: ${data.timestamp}`);
-    device.publish('kitty-detection', JSON.stringify({ 'motion': true, 'timestamp': data.timestamp}));
+    const now = moment().tz('America/New_York').format('LLL');
+    console.log(`Kitty Alert: Kitty spotted at: ${now}`);
+    device.publish('kitty-detection', JSON.stringify({ 'motion': true, 'timestamp': now}));
   });
 
   motion.on('motionend', () => {
-    console.log('No kitties detected in 25ms');
+    console.log('No kitties detected in 100ms');
   });
 });
 

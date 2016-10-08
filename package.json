@@ -1,7 +1,7 @@
 {
   "name": "kitty-detector",
   "version": "0.0.1",
-  "description": "Tessel project",
+  "description": "Detects kitty motion and sends data to AWS IoT. Uses a Tessel 2 and an Adafruit PIR sensor to detect movement",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,12 +9,18 @@
   "repository": "www.github.com/lynnaloo/kitty-detector",
   "keywords": [
     "Tessel",
-    "kitty"
+    "kitty",
+    "johnny-five",
+    "PIR",
+    "Iot",
+    "AWS"
   ],
   "license": "MIT",
-  "readme": "Detects nearby kitties.",
   "dependencies": {
-    "aws-iot-device-sdk": "^1.0.12"
+    "aws-iot-device-sdk": "^1.0.12",
+    "johnny-five": "^0.10.1",
+    "moment-timezone": "^0.5.5",
+    "tessel-io": "^0.7.2"
   },
   "devDependencies": {
     "eslint": "^3.7.0",
