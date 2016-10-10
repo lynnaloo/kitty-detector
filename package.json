@@ -20,6 +20,7 @@
     "aws-iot-device-sdk": "^1.0.12",
     "johnny-five": "^0.10.1",
     "moment-timezone": "^0.5.5",
+    "tessel-av": "^0.10.0",
     "tessel-io": "^0.7.2"
   },
   "devDependencies": {
