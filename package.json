@@ -21,15 +21,16 @@
 		"johnny-five": "^0.10.1",
 		"moment-timezone": "^0.5.5"
 	},
-	"optionalDependencies": {
-		"tessel-av": "^0.10.0",
-		"tessel-io": "^0.7.2",
-		"raspi-io": "7.2.1",
-		"t2": "0.0.1",
-		"t2-cli": "0.0.29"
-	},
 	"devDependencies": {
 		"eslint": "^3.7.0",
 		"eslint-config-eta": "0.0.6"
+	},
+	"optionalDependencies": {
+		"raspi-io": "7.2.1",
+		"raspicam": "^0.2.13",
+		"t2": "0.0.1",
+		"t2-cli": "0.0.29",
+		"tessel-av": "^0.10.0",
+		"tessel-io": "^0.7.2"
 	}
 }

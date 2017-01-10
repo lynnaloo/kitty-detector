@@ -43,3 +43,5 @@ database.json
 certificate.pem.crt
 private.pem.key
 root-CA.pem.crt
+
+/tmp
