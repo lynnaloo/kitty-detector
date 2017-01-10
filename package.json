@@ -1,32 +1,35 @@
 {
-  "name": "kitty-detector",
-  "version": "0.0.1",
-  "description": "Detects kitty motion and sends data to AWS IoT. Uses a Tessel 2 and an Adafruit PIR sensor to detect movement",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": "www.github.com/lynnaloo/kitty-detector",
-  "keywords": [
-    "Tessel",
-    "kitty",
-    "johnny-five",
-    "PIR",
-    "Iot",
-    "AWS"
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "aws-iot-device-sdk": "^1.0.12",
-    "johnny-five": "^0.10.1",
-    "moment-timezone": "^0.5.5",
-    "tessel-av": "^0.10.0",
-    "tessel-io": "^0.7.2"
-  },
-  "devDependencies": {
-    "eslint": "^3.7.0",
-    "eslint-config-eta": "0.0.6",
-    "t2": "0.0.1",
-    "t2-cli": "0.0.29"
-  }
+	"name": "kitty-detector",
+	"version": "0.0.1",
+	"description": "Detects kitty motion and sends data to AWS IoT. Uses a Tessel 2 and an Adafruit PIR sensor to detect movement",
+	"keywords": [
+		"Tessel",
+		"kitty",
+		"johnny-five",
+		"PIR",
+		"Iot",
+		"AWS"
+	],
+	"license": "MIT",
+	"main": "index.js",
+	"repository": {},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"aws-iot-device-sdk": "^1.0.12",
+		"johnny-five": "^0.10.1",
+		"moment-timezone": "^0.5.5"
+	},
+	"optionalDependencies": {
+		"tessel-av": "^0.10.0",
+		"tessel-io": "^0.7.2",
+		"raspi-io": "7.2.1",
+		"t2": "0.0.1",
+		"t2-cli": "0.0.29"
+	},
+	"devDependencies": {
+		"eslint": "^3.7.0",
+		"eslint-config-eta": "0.0.6"
+	}
 }
