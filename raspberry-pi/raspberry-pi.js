@@ -71,8 +71,17 @@ board.on('ready', () => {
           // Successful
           console.log('Image successfully uploaded', data);
           const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${filename}`;
+          const detectionObj = {
+            'motion': true,
+            'timestamp': now,
+            'imageUrl': imageUrl,
+            's3': {
+              'bucket': params.Bucket,
+              'image': filename
+            }
+          };
           device.publish('kitty-detection',
-            JSON.stringify({'motion': true, 'timestamp': now, 'imageUrl': imageUrl}));
+            JSON.stringify(detectionObj));
         }
       });
     });
