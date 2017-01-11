@@ -1,7 +1,17 @@
 const five = require('johnny-five');
 const moment = require('moment-timezone');
 const iot = require('aws-iot-device-sdk');
+const AWS = require('aws-sdk');
 const Io = require('raspi-io');
+const RaspiCam = require('raspicam');
+const fs = require('fs');
+const s3 = new AWS.S3();
+
+const now = moment().tz('America/New_York').format('LLL');
+const camera = new RaspiCam({
+  mode: 'photo',
+  output: '/tmp/cat.jpg'
+});
 const board = new five.Board({
   io: new Io()
 });
@@ -26,14 +36,56 @@ board.on('ready', () => {
   });
 
   motion.on('motionstart', data => {
-    const now = moment().tz('America/New_York').format('LLL');
     console.log(`Kitty Alert: Kitty spotted at: ${now}`);
-    device.publish('kitty-detection', JSON.stringify({ 'motion': true, 'timestamp': now}));
+    if (camera) {
+      // take a photo
+      camera.start();
+    } else {
+      // if there isn't a camera, send the sns message
+      device.publish('kitty-detection', JSON.stringify({'motion': true, 'timestamp': now}));
+    }
   });
 
   motion.on('motionend', () => {
     console.log('No kitties detected in 100ms');
   });
+
+  if (camera) {
+    // listen for the "read" event triggered when each new photo/video is saved
+    camera.on('read', (err, timestamp, filename) => {
+      console.log('debug', filename);
+      // TODO: upload photo or analyse photo?
+      const img = fs.readFileSync(filename);
+      const params = {
+        Bucket: 'kitty-detections',
+        Key: filename,
+        Body: img,
+        ContentType: 'image/jpeg',
+        ACL: 'public-read'
+      };
+
+      s3.putObject(params, (err, data) => {
+        if (err) {
+          console.log('Problem uploading image', err);
+        } else {
+          // Successful
+          console.log('Image successfully uploaded', data);
+          const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${filename}`;
+          const detectionObj = {
+            'motion': true,
+            'timestamp': now,
+            'imageUrl': imageUrl,
+            's3': {
+              'bucket': params.Bucket,
+              'image': filename
+            }
+          };
+          device.publish('kitty-detection',
+            JSON.stringify(detectionObj));
+        }
+      });
+    });
+  }
 });
 
 device.on('connect', () => {

@@ -1,16 +1,20 @@
 # kitty-detector
 
 > Detects kitty motion and sends data to AWS IoT and Lambda.
+> This project supports Tessel 2 (basic functionality) and Raspberry Pi.
 
 ## Parts List
 
 *   [Tessel 2](http://www.tessel.io) or [Raspberry Pi](raspberrypi.org)
 *   [PIR Sensor](https://www.adafruit.com/product/189)
-*   External Battery Holder and 4 X AA Batteries
+*   External Battery Holder and 4 X AA Batteries (Tessel 2) or USB Power Supply (RPi)
 *   Lead Wires
+
+### Optional Parts
+
+*   1 USB Camera or Raspberry Pi Camera
 *   3-D Printed Kitty Detector case (optional)
 *   1 Kitty (optional)
-*   1 USB Camera (Tessel 2) or Raspberry Pi Camera
 
 ## Install
 
