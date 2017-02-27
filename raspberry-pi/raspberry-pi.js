@@ -52,7 +52,7 @@ board.on('ready', () => {
       camera.stop();
 
       console.log('Image saved with filename:', filename);
-      const img = fs.readFile(`./tmp/${filename}`, (err, data) => {
+      fs.readFile(`./tmp/${filename}`, (err, data) => {
         if (err) {
           console.log('Problem reading file', err);
           throw err;
@@ -61,7 +61,7 @@ board.on('ready', () => {
         const params = {
           Bucket: 'kitty-detections',
           Key: filename,
-          Body: img,
+          Body: data,
           ContentType: 'image/jpeg',
           ACL: 'public-read'
         };
