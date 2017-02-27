@@ -1,10 +1,15 @@
 const five = require('johnny-five');
 const moment = require('moment-timezone');
 const iot = require('aws-iot-device-sdk');
-const AWS = require('aws-sdk');
 const Io = require('raspi-io');
 const RaspiCam = require('raspicam');
 const fs = require('fs');
+
+const AWS = require('aws-sdk');
+AWS.config = new AWS.Config();
+AWS.config.accessKeyId = '';
+AWS.config.secretAccessKey = '';
+AWS.config.region = 'us-east-1';
 const s3 = new AWS.S3();
 
 const now = moment().tz('America/New_York').format('LLL');
@@ -44,15 +49,14 @@ board.on('ready', () => {
 
     // listen for the "read" event triggered when each new photo/video is saved
     camera.on('read', (err, timestamp, filename) => {
-      camera.exit();
+      camera.stop();
 
       console.log('Image saved with filename:', filename);
-      const img = fs.readFile('./tmp/cat.jpg', (err, data) => {
+      const img = fs.readFile(`./tmp/${filename}`, (err, data) => {
         if (err) {
           console.log('Problem reading file', err);
           throw err;
         }
-        console.log(data);
 
         const params = {
           Bucket: 'kitty-detections',
@@ -93,7 +97,7 @@ board.on('ready', () => {
   });
 
   motion.on('motionstart', data => {
-    console.log(`Kitty Alert: Kitty spotted at: ${now}`);
+    console.log(`Motion Alert: something was spotted at: ${now}`);
     if (camera) {
       // take a photo
       camera.start();

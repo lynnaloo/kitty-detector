@@ -39,7 +39,7 @@ $ t2 push tessel/tessel.js
 
 ### Raspberry Pi Terminal
 
-*   Update your Raspberry Pi and install raspi-config
+*   Update your Raspberry Pi and install `raspi-config`
 
 ```
 $ apt-get update
@@ -57,8 +57,9 @@ $ sudo raspi-config
 ```
 $ git clone https://github.com/lynnaloo/kitty-detector.git
 $ cd kitty-detector
-$ npm i
-$ sudo node run raspberry-pi/raspberry-pi.js
+$ npm i -g yarn
+$ yarn install
+$ sudo node raspberry-pi/raspberry-pi.js
 ```
 
 ## See Also
