@@ -11,7 +11,9 @@ const now = moment().tz('America/New_York').format('LLL');
 // Make the filename configurable
 const camera = new RaspiCam({
   mode: 'photo',
-  output: '/tmp/cat.jpg'
+  output: '/tmp/cat.jpg',
+  encoding: 'jpg',
+	timeout: 0 // take the picture immediately
 });
 const board = new five.Board({
   io: new Io()
@@ -32,10 +34,20 @@ board.on('ready', () => {
   });
 
   if (camera) {
+    camera.on('start', (err, timestamp) => {
+      console.log('Camera is taking a photo');
+    });
+
+    camera.on('exit', (timestamp) => {
+      console.log('Camera is now exiting');
+    });
+
     // listen for the "read" event triggered when each new photo/video is saved
     camera.on('read', (err, timestamp, filename) => {
-      console.log('Local Saved file:', filename);
-      const img = fs.readFile('/tmp/cat.jpg', (err, data) => {
+      camera.exit();
+
+      console.log('Image saved with filename:', filename);
+      const img = fs.readFile('./tmp/cat.jpg', (err, data) => {
         if (err) {
           console.log('Problem reading file', err);
           throw err;
