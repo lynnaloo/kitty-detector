@@ -8,6 +8,7 @@ const fs = require('fs');
 const s3 = new AWS.S3();
 
 const now = moment().tz('America/New_York').format('LLL');
+// Make the filename configurable
 const camera = new RaspiCam({
   mode: 'photo',
   output: '/tmp/cat.jpg'
@@ -30,6 +31,50 @@ board.on('ready', () => {
     freq: 100
   });
 
+  if (camera) {
+    // listen for the "read" event triggered when each new photo/video is saved
+    camera.on('read', (err, timestamp, filename) => {
+      console.log('Local Saved file:', filename);
+      const img = fs.readFile('/tmp/cat.jpg', (err, data) => {
+        if (err) {
+          console.log('Problem reading file', err);
+          throw err;
+        }
+        console.log(data);
+
+        const params = {
+          Bucket: 'kitty-detections',
+          Key: filename,
+          Body: img,
+          ContentType: 'image/jpeg',
+          ACL: 'public-read'
+        };
+
+        s3.putObject(params, (err, data) => {
+          if (err) {
+            console.log('Problem uploading image', err);
+            throw err;
+          }
+
+          // Successful
+          console.log('Image successfully uploaded', data);
+          const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${filename}`;
+          console.log(imageUrl);
+          const detectionObj = {
+            'motion': true,
+            'timestamp': now,
+            'imageUrl': imageUrl,
+            's3': {
+              'bucket': params.Bucket,
+              'image': filename
+            }
+          };
+          device.publish('kitty-detection', JSON.stringify(detectionObj));
+        });
+      });
+    });
+  }
+
   // This happens once at the begnning of the session. The default state.
   motion.on('calibrated', () => {
     console.log('Motion detector calibrated');
@@ -49,43 +94,6 @@ board.on('ready', () => {
   motion.on('motionend', () => {
     console.log('No kitties detected in 100ms');
   });
-
-  if (camera) {
-    // listen for the "read" event triggered when each new photo/video is saved
-    camera.on('read', (err, timestamp, filename) => {
-      console.log('debug', filename);
-      // TODO: upload photo or analyse photo?
-      const img = fs.readFileSync(filename);
-      const params = {
-        Bucket: 'kitty-detections',
-        Key: filename,
-        Body: img,
-        ContentType: 'image/jpeg',
-        ACL: 'public-read'
-      };
-
-      s3.putObject(params, (err, data) => {
-        if (err) {
-          console.log('Problem uploading image', err);
-        } else {
-          // Successful
-          console.log('Image successfully uploaded', data);
-          const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${filename}`;
-          const detectionObj = {
-            'motion': true,
-            'timestamp': now,
-            'imageUrl': imageUrl,
-            's3': {
-              'bucket': params.Bucket,
-              'image': filename
-            }
-          };
-          device.publish('kitty-detection',
-            JSON.stringify(detectionObj));
-        }
-      });
-    });
-  }
 });
 
 device.on('connect', () => {
