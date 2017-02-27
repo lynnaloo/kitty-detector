@@ -11,7 +11,7 @@ const now = moment().tz('America/New_York').format('LLL');
 // Make the filename configurable
 const camera = new RaspiCam({
   mode: 'photo',
-  output: '/tmp/cat.jpg',
+  output: './tmp/cat.jpg',
   encoding: 'jpg',
 	timeout: 0 // take the picture immediately
 });
