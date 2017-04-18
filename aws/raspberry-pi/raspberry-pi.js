@@ -13,6 +13,7 @@ AWS.config.region = 'us-east-1';
 const s3 = new AWS.S3();
 
 const now = moment().tz('America/New_York').format('LLL');
+
 // Make the filename configurable
 const camera = new RaspiCam({
   mode: 'photo',
@@ -59,7 +60,7 @@ board.on('ready', () => {
         }
 
         const params = {
-          Bucket: 'kitty-detections',
+          Bucket: 'kitty-detections', // TODO: make configurable
           Key: filename,
           Body: data,
           ContentType: 'image/jpeg',
@@ -117,7 +118,7 @@ device.on('connect', () => {
 });
 
 device.on('message', (topic, payload) => {
-  console.log('message', topic, payload.toString());
+  console.log('Your messaged was received by Amazon IoT:', topic, payload);
 });
 
 device.on('close', () => {

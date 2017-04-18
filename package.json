@@ -1,6 +1,6 @@
 {
 	"name": "kitty-detector",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Detects kitty motion and sends data to AWS IoT. Uses a Tessel 2 and an Adafruit PIR sensor to detect movement",
 	"keywords": [
 		"Tessel",

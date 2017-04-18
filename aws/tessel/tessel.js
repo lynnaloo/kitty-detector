@@ -28,7 +28,7 @@ board.on('ready', () => {
   motion.on('motionstart', data => {
     const now = moment().tz('America/New_York').format('LLL');
     console.log(`Kitty Alert: Kitty spotted at: ${now}`);
-    device.publish('kitty-detection', JSON.stringify({ 'motion': true, 'timestamp': now}));
+    device.publish('kitty-detection', { 'motion': true, 'timestamp': now});
   });
 
   motion.on('motionend', () => {
