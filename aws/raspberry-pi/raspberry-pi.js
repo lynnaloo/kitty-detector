@@ -10,23 +10,24 @@ const s3 = new AWS.S3();
 
 const now = moment().tz('America/New_York').format('LLL');
 
-// Make the filename configurable
+// AWS IoT Device configuration
+const device = iot.device({
+  keyPath: __dirname + '/keys/private.pem.key',
+  certPath: __dirname + '/keys/certificate.pem.crt',
+  caPath: __dirname + '/keys/root-CA.pem.crt',
+  clientId: process.env.AWS_IOT_CLIENTID || 'raspberry-kitty',
+  region: process.env.AWS_REGION || 'us-east-1'
+});
+
+// Raspberry Pi Camera configuration
 const camera = new RaspiCam({
   mode: 'photo',
-  output: './tmp/cat.jpg',
+  output: `./tmp/cat-${moment().valueOf()}.jpg`,
   encoding: 'jpg',
 	timeout: 0 // take the picture immediately
 });
 const board = new five.Board({
   io: new Io()
-});
-
-const device = iot.device({
-  keyPath: __dirname + '/private.pem.key',
-  certPath: __dirname + '/certificate.pem.crt',
-  caPath: __dirname + '/root-CA.pem.crt',
-  clientId: process.env.AWS_IOT_CLIENTID || 'raspberry-kitty',
-  region: process.env.AWS_REGION || 'us-east-1'
 });
 
 board.on('ready', () => {
@@ -35,20 +36,22 @@ board.on('ready', () => {
     freq: 100
   });
 
+  // if the camera doesn't exist, don't bother trying to take or upload photo
   if (camera) {
     camera.on('start', (err, timestamp) => {
-      console.log('Camera is taking a photo');
+      console.log(`Camera is taking a photo at ${now}`);
     });
 
     camera.on('exit', (timestamp) => {
-      console.log('Camera is now exiting');
+      console.log('Camera is exiting');
     });
 
     // listen for the "read" event triggered when each new photo/video is saved
     camera.on('read', (err, timestamp, filename) => {
       camera.stop();
-
       console.log('Image saved with filename:', filename);
+
+      // read the file from the `/tmp` directory
       fs.readFile(`./tmp/${filename}`, (err, data) => {
         if (err) {
           console.log('Problem reading file', err);
@@ -56,7 +59,7 @@ board.on('ready', () => {
         }
 
         const params = {
-          Bucket: 'kitty-detections', // TODO: make configurable
+          Bucket: 'kitty-detections',
           Key: filename,
           Body: data,
           ContentType: 'image/jpeg',
@@ -82,6 +85,7 @@ board.on('ready', () => {
               'image': filename
             }
           };
+          // send data about this detection to AWS IoT
           device.publish('kitty-detection', JSON.stringify(detectionObj));
         });
       });

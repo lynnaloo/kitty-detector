@@ -7,9 +7,9 @@ const board = new five.Board({
 });
 
 const device = iot.device({
-  keyPath: __dirname + '/private.pem.key',
-  certPath: __dirname + '/certificate.pem.crt',
-  caPath: __dirname + '/root-CA.pem.crt',
+  keyPath: __dirname + '/keys/private.pem.key',
+  certPath: __dirname + '/keys/certificate.pem.crt',
+  caPath: __dirname + '/keys/root-CA.pem.crt',
   clientId: process.env.AWS_IOT_CLIENTID || 'tessel2-friday',
   region: process.env.AWS_REGION || 'us-east-1'
 });

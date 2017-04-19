@@ -31,7 +31,7 @@ in the root of your device directory.
 ### For Amazon SDK (S3, etc)
 
 *   [Create](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) AWS Access Keys
-*   [Set Environment variables](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment) for access keys
+*   [Set AWS Credentials files or Environment variables](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment) for access keys
 
 ### Tessel 2
 

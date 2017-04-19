@@ -17,20 +17,20 @@
 		"pi": "node aws/raspberry-pi/raspberry-pi.js"
 	},
 	"dependencies": {
-		"aws-iot-device-sdk": "^1.0.12",
+		"aws-iot-device-sdk": "^1.0.14",
 		"aws-sdk": "^2.42.0",
-		"johnny-five": "^0.10.1",
-		"moment-timezone": "^0.5.5"
+		"johnny-five": "^0.10.9",
+		"moment-timezone": "^0.5.13"
 	},
 	"devDependencies": {
-		"eslint": "^3.7.0",
-		"eslint-config-eta": "^0.0.6"
+		"eslint": "^3.19.0",
+		"eslint-config-eta": "^0.0.9"
 	},
 	"optionalDependencies": {
-		"raspi-io": "^7.2.1",
+		"raspi-io": "^7.3.1",
 		"raspicam": "https://github.com/troyth/node-raspicam",
 		"t2": "^0.0.1",
-		"tessel-av": "^0.10.0",
-		"tessel-io": "^0.7.2"
+		"tessel-av": "^0.15.0",
+		"tessel-io": "^0.10.3"
 	}
 }
