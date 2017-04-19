@@ -8,8 +8,6 @@ const fs = require('fs');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-const now = moment().tz('America/New_York').format('LLL');
-
 // AWS IoT Device configuration
 const device = iot.device({
   keyPath: __dirname + '/keys/private.pem.key',
@@ -22,7 +20,7 @@ const device = iot.device({
 // Raspberry Pi Camera configuration
 const camera = new RaspiCam({
   mode: 'photo',
-  output: `./tmp/cat-${moment().valueOf()}.jpg`,
+  output: './tmp/temp-cat.jpg',
   encoding: 'jpg',
 	timeout: 0 // take the picture immediately
 });
@@ -39,7 +37,7 @@ board.on('ready', () => {
   // if the camera doesn't exist, don't bother trying to take or upload photo
   if (camera) {
     camera.on('start', (err, timestamp) => {
-      console.log(`Camera is taking a photo at ${now}`);
+      console.log('Camera is taking a photo!');
     });
 
     camera.on('exit', (timestamp) => {
@@ -60,10 +58,10 @@ board.on('ready', () => {
 
         const params = {
           Bucket: 'kitty-detections',
-          Key: filename,
-          Body: data,
+          Key: `${filename}-${moment().valueOf()}`,
+          Body: data, // file buffer
           ContentType: 'image/jpeg',
-          ACL: 'public-read'
+          ACL: 'public-read' // this is temporary fix
         };
 
         s3.putObject(params, (err, data) => {
@@ -74,17 +72,18 @@ board.on('ready', () => {
 
           // Successful
           console.log('Image successfully uploaded', data);
-          const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${filename}`;
+          const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${params.Key}`;
           console.log(imageUrl);
           const detectionObj = {
             'motion': true,
-            'timestamp': now,
+            'timestamp': moment().tz('America/New_York').format('LLL'),
             'imageUrl': imageUrl,
             's3': {
               'bucket': params.Bucket,
-              'image': filename
+              'image': params.Key
             }
           };
+
           // send data about this detection to AWS IoT
           device.publish('kitty-detection', JSON.stringify(detectionObj));
         });
@@ -94,10 +93,11 @@ board.on('ready', () => {
 
   // This happens once at the begnning of the session. The default state.
   motion.on('calibrated', () => {
-    console.log('Motion detector calibrated');
+    console.log('Motion detector calibrated and ready');
   });
 
   motion.on('motionstart', data => {
+    const now = moment().tz('America/New_York').format('LLL');
     console.log(`Motion Alert: something was spotted at: ${now}`);
     if (camera) {
       // take a photo
@@ -109,7 +109,7 @@ board.on('ready', () => {
   });
 
   motion.on('motionend', () => {
-    console.log('No kitties detected in 100ms');
+    console.log('Motion has stopped for 100ms');
   });
 });
 
