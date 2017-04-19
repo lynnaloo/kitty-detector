@@ -59,7 +59,7 @@ $ git clone https://github.com/lynnaloo/kitty-detector.git
 $ cd kitty-detector
 $ npm i -g yarn
 $ yarn install
-$ sudo node raspberry-pi/raspberry-pi.js
+$ sudo node aws/raspberry-pi/raspberry-pi.js
 ```
 
 ## See Also
