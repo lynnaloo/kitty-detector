@@ -49,9 +49,9 @@ $ t2 push tessel/tessel.js
 *   Update your Raspberry Pi and install `raspi-config`
 
 ```
-$ apt-get update
-$ apt-get upgrade
-$ apt-get install raspi-config
+$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get install git raspi-config wiringpi
 ```
 *   Enable Raspberry Pi camera using configuration program
 

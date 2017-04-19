@@ -4,6 +4,7 @@ const iot = require('aws-iot-device-sdk');
 const Io = require('raspi-io');
 const RaspiCam = require('raspicam');
 const fs = require('fs');
+const path = require('path');
 
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
@@ -20,7 +21,7 @@ const device = iot.device({
 // Raspberry Pi Camera configuration
 const camera = new RaspiCam({
   mode: 'photo',
-  output: './tmp/temp-cat.jpg',
+  output: './tmp/cat.jpg',
   encoding: 'jpg',
 	timeout: 0 // take the picture immediately
 });
@@ -56,9 +57,12 @@ board.on('ready', () => {
           throw err;
         }
 
+        const timestamp = moment().valueOf();
+        const newFileName = `${path.parse(filename).name}-${timestamp}${path.parse(filename).ext}`;
+
         const params = {
           Bucket: 'kitty-detections',
-          Key: `${filename}-${moment().valueOf()}`,
+          Key: newFileName,
           Body: data, // file buffer
           ContentType: 'image/jpeg',
           ACL: 'public-read' // this is temporary fix
