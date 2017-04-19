@@ -6,10 +6,6 @@ const RaspiCam = require('raspicam');
 const fs = require('fs');
 
 const AWS = require('aws-sdk');
-AWS.config = new AWS.Config();
-AWS.config.accessKeyId = '';
-AWS.config.secretAccessKey = '';
-AWS.config.region = 'us-east-1';
 const s3 = new AWS.S3();
 
 const now = moment().tz('America/New_York').format('LLL');

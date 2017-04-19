@@ -1,22 +1,24 @@
 # kitty-detector
 
 > Detects kitty motion and sends data to AWS IoT and Lambda.
-> This project supports Tessel 2 (basic functionality) and Raspberry Pi.
+> This project is best used with Raspberry Pi, but there is basic Tessel 2 support for detection.
 
 ## Parts List
 
-*   [Tessel 2](http://www.tessel.io) or [Raspberry Pi](raspberrypi.org)
+*   [Raspberry Pi](raspberrypi.org) or [Tessel 2](http://www.tessel.io)
 *   [PIR Sensor](https://www.adafruit.com/product/189)
 *   External Battery Holder and 4 X AA Batteries (Tessel 2) or USB Power Supply (RPi)
 *   Lead Wires
 
 ### Optional Parts
 
-*   1 USB Camera or Raspberry Pi Camera
-*   3-D Printed Kitty Detector case (optional)
-*   1 Kitty (optional)
+*   1 Raspberry Pi Camera
+*   Kitty Detector case
+*   1 Kitty
 
 ## Install
+
+### For Amazon IoT
 
 *   In your Amazon IoT console, add each of your devices as a "thing" resource and download
 the provided certificates and private key.
@@ -25,6 +27,11 @@ the provided certificates and private key.
 in the root of your device directory.
 
 *   Setup your device per the device instructions and connect to the local network.
+
+### For Amazon SDK (S3, etc)
+
+*   [Create](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) AWS Access Keys
+*   [Set Environment variables](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment) for access keys
 
 ### Tessel 2
 
@@ -59,7 +66,7 @@ $ git clone https://github.com/lynnaloo/kitty-detector.git
 $ cd kitty-detector
 $ npm i -g yarn
 $ yarn install
-$ sudo node aws/raspberry-pi/raspberry-pi.js
+$ sudo npm run pi
 ```
 
 ## See Also
