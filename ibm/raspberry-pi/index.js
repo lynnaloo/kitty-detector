@@ -3,7 +3,7 @@ const moment = require('moment-timezone');
 const Io = require('raspi-io');
 const RaspiCam = require('raspicam');
 const fs = require('fs');
-const path = require('path');
+//const path = require('path');
 
 const Client = require('ibmiotf');
 const config = {
@@ -38,8 +38,6 @@ board.on('ready', () => {
     console.log('Motion detector calibrated and ready');
   });
 
-  // connect to IBM IoT
-  device.connect();
   // setting the log level
   device.log.setLevel('info');
   // log errors
@@ -48,7 +46,7 @@ board.on('ready', () => {
   });
 
   device.on('connect', () => {
-    console.log('Connecting to IBM Iot');
+    console.log('Connected to IBM Iot');
 
     motion.on('motionstart', data => {
       const now = moment().tz('America/New_York').format('LLL');
@@ -65,6 +63,10 @@ board.on('ready', () => {
       console.log('Motion has stopped for 100ms');
     });
   });
+
+  // connect to IBM IoT
+  console.log('Connecting to IBM IoT Platform');
+  device.connect();
 });
 
 function startCamera() {
@@ -85,34 +87,34 @@ function startCamera() {
         throw err;
       }
 
-      const timestamp = moment().valueOf();
-      const newFileName = `${path.parse(filename).name}-${timestamp}${path.parse(filename).ext}`;
+      // const timestamp = moment().valueOf();
+      // const newFileName = `${path.parse(filename).name}-${timestamp}${path.parse(filename).ext}`;
 
-      const params = {
-        Key: newFileName,
-        Body: data, // file buffer
-        ContentType: 'image/jpeg'
-      };
+      // const params = {
+      //   Key: newFileName,
+      //   Body: data, // file buffer
+      //   ContentType: 'image/jpeg'
+      // };
 
-      uploadFile(params)
-      .then((imageUrl) => {
+      // uploadFile(params)
+      // .then((imageUrl) => {
         const detectionObj = {
           'motion': true,
           'timestamp': moment().tz('America/New_York').format('LLL'),
-          'imageUrl': imageUrl
+          'imageUrl': ''
         };
         device.publish('kitty-detection', 'json', JSON.stringify(detectionObj));
-      });
+      // });
     });
   });
 }
 
 // TODO: move this to a separate library
-function uploadFile(params) {
-  return new Promise((resolve, reject) => {
-    console.log('Image successfully uploaded');
-    const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${params.Key}`;
-    resolve(imageUrl);
-  });
-}
+// function uploadFile(params) {
+//   return new Promise((resolve, reject) => {
+//     console.log('Image successfully uploaded');
+//     const imageUrl = `https://s3.amazonaws.com/${params.Bucket}/${params.Key}`;
+//     resolve(imageUrl);
+//   });
+// }
 
