@@ -1,18 +1,17 @@
 # kitty-detector
 
-> Detects kitty motion and sends data to AWS IoT and Lambda.
-> This project is best used with Raspberry Pi, but there is basic Tessel 2 support for detection.
+> Detects kitty motion and sends data to the IoT Platform.
+> This project is best used with Raspberry Pi
 
 ## Parts List
 
-*   [Raspberry Pi](raspberrypi.org) or [Tessel 2](http://www.tessel.io)
+*   [Raspberry Pi](raspberrypi.org)
 *   [PIR Sensor](https://www.adafruit.com/product/189)
-*   External Battery Holder and 4 X AA Batteries (Tessel 2) or USB Power Supply (RPi)
+*   1 Raspberry Pi Camera
+*   USB Power Supply (RPi)
 *   Lead Wires
 
 ### Optional Parts
-
-*   1 Raspberry Pi Camera
 *   Kitty Detector case
 *   1 Kitty
 
@@ -33,16 +32,13 @@ in the root of your device directory.
 *   [Create](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) AWS Access Keys
 *   [Set AWS Credentials files or Environment variables](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment) for access keys
 
-### Tessel 2
+### For IBM IoT Platform
 
-With [Node.js](https://node.org/) installed, download the code and deploy to the device:
+* TODO
 
-```
-$ git clone https://github.com/lynnaloo/kitty-detector.git
-$ cd kitty-detector
-$ npm i
-$ t2 push tessel/tessel.js
-```
+### For IBM Bluemix
+
+* TODO
 
 ### Raspberry Pi Terminal
 
@@ -73,9 +69,9 @@ $ sudo npm run pi
 
 *   [IoT and Tessel Tutorial](https://cloudonaut.io/getting-started-with-aws-iot-and-tessel/)
 *   [johnny-five](http://www.johnny-five.io)
-*   [Tessel](http://www.tessel.io)
 *   [Raspberry Pi](http://www.raspberrypi.org)
 *   [Amazon IoT](https://console.aws.amazon.com/iot/)
+*   [IBM Iot Platform](https://console.ng.bluemix.net/docs/services/IoT/index.html#gettingstartedtemplate)
 
 ## License
 

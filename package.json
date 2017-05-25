@@ -1,36 +1,38 @@
 {
-	"name": "kitty-detector",
-	"version": "1.0.0",
-	"description": "Detects kitty motion and sends data to AWS IoT. Uses a Tessel 2 and an Adafruit PIR sensor to detect movement",
-	"keywords": [
-		"Tessel",
-		"kitty",
-		"johnny-five",
-		"PIR",
-		"Iot",
-		"AWS"
-	],
-	"license": "MIT",
-	"main": "index.js",
-	"repository": {},
-	"scripts": {
-		"pi": "node aws/raspberry-pi/raspberry-pi.js"
-	},
-	"dependencies": {
-		"aws-iot-device-sdk": "^1.0.14",
-		"aws-sdk": "^2.42.0",
-		"johnny-five": "^0.10.9",
-		"moment-timezone": "^0.5.13"
-	},
-	"devDependencies": {
-		"eslint": "^3.19.0",
-		"eslint-config-eta": "^0.0.9"
-	},
-	"optionalDependencies": {
-		"raspi-io": "^7.3.1",
-		"raspicam": "https://github.com/troyth/node-raspicam",
-		"t2": "^0.0.1",
-		"tessel-av": "^0.15.0",
-		"tessel-io": "^0.10.3"
-	}
+  "name": "kitty-detector",
+  "version": "1.0.0",
+  "description": "Detects kitty motion and sends data to AWS IoT. Uses a Tessel 2 and an Adafruit PIR sensor to detect movement",
+  "keywords": [
+    "Tessel",
+    "kitty",
+    "johnny-five",
+    "PIR",
+    "Iot",
+    "AWS"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {},
+  "scripts": {
+    "aws": "node aws/raspberry-pi/index.js",
+    "ibm": "node ibm/raspberry-pi/index.js"
+  },
+  "dependencies": {
+    "aws-iot-device-sdk": "^1.0.14",
+    "aws-sdk": "^2.42.0",
+    "ibmiotf": "^0.2.34",
+    "johnny-five": "^0.10.9",
+    "moment-timezone": "^0.5.13"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-eta": "^0.0.9"
+  },
+  "optionalDependencies": {
+    "raspi-io": "^7.3.1",
+    "raspicam": "https://github.com/troyth/node-raspicam",
+    "t2": "^0.0.1",
+    "tessel-av": "^0.15.0",
+    "tessel-io": "^0.10.3"
+  }
 }
