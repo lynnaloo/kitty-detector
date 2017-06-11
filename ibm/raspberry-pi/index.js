@@ -16,9 +16,9 @@ const Client = require('ibmiotf');
 //const objStorage = new ObjectStorage(storageConfig);
 
 const iotConfig = {
-  'org': process.env.IOT_ORG,
-  'id': process.env.IOT_DEVICE_ID,
-  'type': process.env.IOT_DEVICE_TYPE,
+  'org': process.env.IOT_ORG, // o1qhwe
+  'id': process.env.IOT_DEVICE_ID, // raspberry-kitty
+  'type': process.env.IOT_DEVICE_TYPE, // raspberry-pi
   'domain': 'internetofthings.ibmcloud.com',
   'auth-method': 'token',
   'auth-token': process.env.IOT_AUTH_TOKEN
