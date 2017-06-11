@@ -20,6 +20,7 @@
   "dependencies": {
     "aws-iot-device-sdk": "^1.0.14",
     "aws-sdk": "^2.42.0",
+    "bluemix-objectstorage": "^0.1.2",
     "ibmiotf": "^0.2.34",
     "johnny-five": "^0.10.9",
     "moment-timezone": "^0.5.13"

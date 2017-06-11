@@ -4,17 +4,26 @@ const Io = require('raspi-io');
 const RaspiCam = require('raspicam');
 const fs = require('fs');
 //const path = require('path');
-
+//const ObjectStorage = require('bluemix-objectstorage').ObjectStorage;
 const Client = require('ibmiotf');
-const config = {
-  'org': 'cat-detector',
-  'id': 'raspberry-kitty',
-  'type': 'raspberry-pi',
+
+// const storageConfig = {
+//   projectId: process.env.STORAGE_PROJECT_ID,
+//   userId: process.env.STORAGE_USER_ID,
+//   password: process.env.STORAGE_PASSWORD,
+//   region: ObjectStorage.Region.DALLAS
+// };
+//const objStorage = new ObjectStorage(storageConfig);
+
+const iotConfig = {
+  'org': process.env.IOT_ORG,
+  'id': process.env.IOT_DEVICE_ID,
+  'type': process.env.IOT_DEVICE_TYPE,
   'domain': 'internetofthings.ibmcloud.com',
   'auth-method': 'token',
   'auth-token': process.env.IOT_AUTH_TOKEN
 };
-const device = new Client.IotfDevice(config);
+const device = new Client.IotfDevice(iotConfig);
 
 // Raspberry Pi Camera configuration
 const camera = new RaspiCam({
@@ -101,8 +110,9 @@ function startCamera() {
         const detectionObj = {
           'motion': true,
           'timestamp': moment().tz('America/New_York').format('LLL'),
-          'imageUrl': ''
+          'url': 'https://raw.githubusercontent.com/lynnaloo/mowgli.ninja/master/mowgli-1.JPG'
         };
+        console.log('publishing event', JSON.stringify(detectionObj));
         device.publish('kitty-detection', 'json', JSON.stringify(detectionObj));
       // });
     });
