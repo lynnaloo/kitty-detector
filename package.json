@@ -31,7 +31,7 @@
   },
   "optionalDependencies": {
     "raspi-io": "^7.3.1",
-    "raspicam": "https://github.com/troyth/node-raspicam",
+    "raspicam": "^0.2.14",
     "t2": "^0.0.1",
     "tessel-av": "^0.15.0",
     "tessel-io": "^0.10.3"
